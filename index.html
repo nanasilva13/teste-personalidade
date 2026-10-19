@@ -1,0 +1,815 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Descobre o teu perfil de personalidade através de um teste interativo.">
+  <title>InnerSelf — Descobre quem és</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #29243b;
+      --muted: #77748b;
+      --purple: #7763b8;
+      --purple-dark: #514183;
+      --lavender: #eee9fa;
+      --pink: #f6e6ef;
+      --cream: #fffdf9;
+      --line: #e9e4f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 5% 5%, #f4e8f2 0, transparent 35%),
+        radial-gradient(ellipse at 95% 25%, #e8e5fb 0, transparent 35%),
+        #faf8fd;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button, label, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .navbar {
+      max-width: 1180px;
+      margin: auto;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--purple);
+    }
+
+    .nav-tag {
+      color: var(--purple-dark);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 8px 15px;
+      font-size: 12px;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 760px;
+      margin: 30px auto 32px;
+      padding: 0 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--purple-dark);
+      background: var(--lavender);
+      padding: 7px 15px;
+      border-radius: 30px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 {
+      font-family: "Playfair Display", Georgia, serif;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 66px);
+      letter-spacing: -1.8px;
+      font-weight: 600;
+    }
+
+    h1 span {
+      color: var(--purple);
+      font-style: italic;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 18px auto 0;
+      font-size: 15px;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 22px;
+      margin-top: 25px;
+      color: #69657c;
+      font-size: 12px;
+    }
+
+    .features span::before {
+      content: "✦";
+      color: var(--purple);
+      margin-right: 7px;
+    }
+
+    .layout {
+      max-width: 1050px;
+      margin: 0 auto 70px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 0.75fr 1.5fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .side-card {
+      background: linear-gradient(145deg, #66529e, #41355f);
+      color: white;
+      padding: 32px 27px;
+      border-radius: 24px;
+      position: sticky;
+      top: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px #51418322;
+    }
+
+    .orb {
+      width: 145px;
+      height: 145px;
+      border-radius: 50%;
+      margin: 12px auto 30px;
+      background:
+        radial-gradient(circle at 35% 30%, #fff8 0, transparent 22%),
+        radial-gradient(circle at 35% 35%, #e9d5ff, #c8a8ec 28%, #8e75c6 57%, #514183 75%);
+      box-shadow: 0 0 0 15px #ffffff0a, 0 0 55px #e9d5ff35;
+    }
+
+    .side-card h2 {
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
+
+    .side-card p {
+      font-size: 13px;
+      color: #eee8ff;
+      margin-bottom: 25px;
+    }
+
+    .side-stat {
+      border-top: 1px solid #ffffff30;
+      padding-top: 17px;
+      margin-top: 17px;
+      font-size: 12px;
+      color: #eee8ff;
+    }
+
+    .side-stat strong {
+      display: block;
+      color: white;
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    .form-card {
+      background: #ffffffed;
+      border: 1px solid #ebe5f2;
+      border-radius: 24px;
+      padding: clamp(22px, 4vw, 38px);
+      box-shadow: 0 20px 60px #48355f0c;
+    }
+
+    .form-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .form-heading h2 {
+      font-size: 27px;
+    }
+
+    .question-count {
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      border-radius: 20px;
+      background: #eeeaf4;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #7763b8, #c19bdc);
+      transition: width 0.3s ease;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--purple);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .personal-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      min-width: 0;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fdfcff;
+      color: var(--ink);
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px #7763b81a;
+    }
+
+    .question {
+      border: 0;
+      border-top: 1px solid var(--line);
+      padding: 23px 0;
+      min-width: 0;
+    }
+
+    .question legend {
+      width: 100%;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .q-number {
+      color: var(--purple);
+      font-size: 12px;
+      margin-right: 7px;
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .option {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+      background: white;
+      font-size: 13px;
+      transition: all 0.2s ease;
+    }
+
+    .option:hover {
+      border-color: #b8a6dc;
+      background: #faf8ff;
+    }
+
+    .option:has(input:checked) {
+      background: #f2edfc;
+      border-color: var(--purple);
+      color: var(--purple-dark);
+    }
+
+    .option input {
+      accent-color: var(--purple);
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    .consent {
+      border: 1px solid #e6deef;
+      border-radius: 13px;
+      background: #faf8fd;
+      padding: 16px;
+      margin: 5px 0 20px;
+    }
+
+    .consent label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .consent input {
+      margin-top: 4px;
+      accent-color: var(--purple);
+      flex-shrink: 0;
+    }
+
+    .privacy-copy {
+      margin: 10px 0 0 26px;
+      font-size: 12px;
+      color: #69657c;
+      line-height: 1.65;
+    }
+
+    .privacy-copy a {
+      color: var(--purple-dark);
+      text-decoration: underline;
+    }
+
+    .submit-button {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      color: white;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(110deg, #7560b5, #574583);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px #66529e30;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px #66529e40;
+    }
+
+    .small-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 13px;
+    }
+
+    .result {
+      display: none;
+      margin-top: 25px;
+      padding: 25px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f0eafd, #fff1f6);
+      border: 1px solid #e4d8f5;
+      animation: appear 0.5s ease;
+    }
+
+    .result h2 {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .result p {
+      color: #5e5871;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .result-symbol {
+      font-size: 35px;
+      margin-bottom: 12px;
+    }
+
+    .restart {
+      margin-top: 18px;
+      padding: 10px 16px;
+      border: 1px solid #b6a6d8;
+      color: var(--purple-dark);
+      background: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 0 20px 35px;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: relative;
+        top: 0;
+      }
+
+      .orb {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+      }
+
+      .side-card h2 {
+        font-size: 24px;
+      }
+
+      .personal-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .hero {
+        margin-top: 15px;
+      }
+
+      .navbar {
+        padding: 18px 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">inner<span>self.</span></div>
+    <div class="nav-tag">✦ Um momento para ti</div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow">A tua jornada começa aqui</div>
+    <h1>Descobre o teu <span>universo interior.</span></h1>
+    <p>
+      Cinco perguntas, um momento de reflexão e uma nova perspetiva
+      sobre a forma como vês o mundo.
+    </p>
+    <div class="features">
+      <span>5 perguntas</span>
+      <span>2 minutos</span>
+      <span>Resultado imediato</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="side-card">
+      <div class="orb" aria-hidden="true"></div>
+      <h2>Conhecer-te é uma forma de crescer.</h2>
+      <p>
+        Não existem respostas certas ou erradas.
+        Escolhe aquilo que melhor representa a tua maneira de ser.
+      </p>
+
+      <div class="side-stat">
+        <strong>01 — Reflete</strong>
+        Responde com sinceridade.
+      </div>
+      <div class="side-stat">
+        <strong>02 — Descobre</strong>
+        Explora as tuas tendências.
+      </div>
+      <div class="side-stat">
+        <strong>03 — Evolui</strong>
+        Usa o resultado como ponto de partida.
+      </div>
+    </aside>
+
+    <section class="form-card">
+      <div class="form-heading">
+        <h2>O teu perfil</h2>
+        <span class="question-count" id="progressText">0 de 5</span>
+      </div>
+
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label="Progresso das respostas"
+        aria-valuemin="0"
+        aria-valuemax="5"
+        aria-valuenow="0"
+        id="progressTrack"
+      >
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <form id="personalityForm">
+        <div class="section-label">Um pouco sobre ti</div>
+
+        <div class="personal-fields">
+          <div class="field full">
+            <label for="name">Como te chamas?</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="O teu nome"
+              autocomplete="name"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="nome@exemplo.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="birthdate">Data de nascimento</label>
+            <input
+              id="birthdate"
+              name="birthdate"
+              type="date"
+              autocomplete="bday"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="section-label">Explora a tua personalidade</div>
+
+        <fieldset class="question">
+          <legend><span class="q-number">01 /</span> Como preferes passar o teu tempo livre?</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="q1" value="A" required> A explorar lugares novos e a conhecer pessoas.</label>
+            <label class="option"><input type="radio" name="q1" value="B"> A desfrutar de momentos tranquilos e criativos.</label>
+            <label class="option"><input type="radio" name="q1" value="C"> A organizar projetos e a alcançar objetivos.</label>
+            <label class="option"><input type="radio" name="q1" value="D"> A ajudar alguém ou a estar com quem amo.</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend><span class="q-number">02 /</span> Quando surge um desafio inesperado, tu...</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="q2" value="A" required> Ages rapidamente e experimentas soluções.</label>
+            <label class="option"><input type="radio" name="q2" value="B"> Refletes e observas antes de agir.</label>
+            <label class="option"><input type="radio" name="q2" value="C"> Criar um plano é a tua primeira prioridade.</label>
+            <label class="option"><input type="radio" name="q2" value="D"> Procuras compreender como todos se sentem.</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend><span class="q-number">03 /</span> Qual destas qualidades te representa melhor?</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="q3" value="A" required> Coragem e espontaneidade.</label>
+            <label class="option"><input type="radio" name="q3" value="B"> Imaginação e sensibilidade.</label>
+            <label class="option"><input type="radio" name="q3" value="C"> Determinação e disciplina.</label>
+            <label class="option"><input type="radio" name="q3" value="D"> Empatia e generosidade.</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend><span class="q-number">04 /</span> Num grupo, qual é o teu papel mais natural?</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="q4" value="A" required> A pessoa que dá energia e inicia aventuras.</label>
+            <label class="option"><input type="radio" name="q4" value="B"> A pessoa que observa e apresenta novas ideias.</label>
+            <label class="option"><input type="radio" name="q4" value="C"> A pessoa que organiza e toma decisões.</label>
+            <label class="option"><input type="radio" name="q4" value="D"> A pessoa que escuta e aproxima os outros.</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend><span class="q-number">05 /</span> O que mais valorizas na vida?</legend>
+          <div class="options">
+            <label class="option"><input type="radio" name="q5" value="A" required> Liberdade, aventura e novas experiências.</label>
+            <label class="option"><input type="radio" name="q5" value="B"> Autenticidade, conhecimento e criatividade.</label>
+            <label class="option"><input type="radio" name="q5" value="C"> Progresso, estabilidade e realização.</label>
+            <label class="option"><input type="radio" name="q5" value="D"> Amor, conexão e bem-estar.</label>
+          </div>
+        </fieldset>
+
+        <div class="consent">
+          <label for="consent">
+            <input type="checkbox" id="consent" name="consent" required>
+            <span>Li e aceito os Termos de Utilização e a Política de Privacidade.</span>
+          </label>
+          <p class="privacy-copy">
+            Este protótipo calcula o resultado no teu navegador.
+            Os dados introduzidos não são enviados para um servidor
+            nem guardados por este código. O e-mail e a data de nascimento
+            não são necessários para calcular o resultado. Não são partilhados
+            dados com terceiros por esta página.
+            <a href="#privacy">Consultar informação de privacidade</a>.
+          </p>
+        </div>
+
+        <button type="submit" class="submit-button">
+          Descobrir o meu perfil&nbsp; →
+        </button>
+
+        <p class="small-note">
+          Este teste é apenas recreativo e não constitui uma avaliação psicológica.
+        </p>
+      </form>
+
+      <section class="result" id="result" aria-live="polite" tabindex="-1">
+        <div class="result-symbol" id="resultSymbol">✦</div>
+        <div class="section-label">O teu resultado</div>
+        <h2 id="resultTitle"></h2>
+        <p id="resultDescription"></p>
+        <p id="resultStrength"></p>
+        <p id="resultAdvice"></p>
+        <button type="button" class="restart" id="restartButton">
+          ↻ Fazer o teste novamente
+        </button>
+      </section>
+    </section>
+  </main>
+
+  <footer id="privacy">
+    <p>InnerSelf © 2026 · Um espaço de autoconhecimento.</p>
+    <p>Os resultados são indicativos e não representam diagnósticos clínicos.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("personalityForm");
+    const result = document.getElementById("result");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressTrack = document.getElementById("progressTrack");
+
+    const profiles = {
+      A: {
+        symbol: "☀️",
+        title: "O Espírito Livre",
+        description:
+          "És uma pessoa dinâmica, curiosa e aberta ao desconhecido. Gostas de descobrir novas possibilidades e sentes-te motivada quando a vida te oferece experiências diferentes.",
+        strength:
+          "A tua força: a coragem de experimentar, adaptar-te e dar o primeiro passo.",
+        advice:
+          "O teu desafio: lembra-te de que parar e descansar também faz parte da aventura."
+      },
+      B: {
+        symbol: "🌙",
+        title: "A Alma Criativa",
+        description:
+          "Tens uma tendência para observar o mundo com profundidade e encontrar significado nos pequenos detalhes. A imaginação e a reflexão podem ter um papel importante na tua vida.",
+        strength:
+          "A tua força: a capacidade de explorar ideias, reconhecer nuances e pensar de forma original.",
+        advice:
+          "O teu desafio: dá espaço às tuas ideias no mundo real, mesmo quando ainda não são perfeitas."
+      },
+      C: {
+        symbol: "✨",
+        title: "A Mente Estratégica",
+        description:
+          "Gostas de transformar intenções em resultados. Planeamento, consistência e objetivos concretos podem ajudar-te a encontrar direção, especialmente perante situações exigentes.",
+        strength:
+          "A tua força: a organização, a determinação e a capacidade de procurar soluções.",
+        advice:
+          "O teu desafio: aceita que nem tudo pode ser previsto e que mudar de plano não significa falhar."
+      },
+      D: {
+        symbol: "💜",
+        title: "O Coração Empático",
+        description:
+          "As relações e o bem-estar das pessoas podem ocupar um lugar central na tua forma de ver o mundo. Valorizas a compreensão, a confiança e a sensação de fazer a diferença.",
+        strength:
+          "A tua força: a atenção às necessidades dos outros e a capacidade de criar proximidade.",
+        advice:
+          "O teu desafio: cuida também dos teus limites e lembra-te de que não tens de resolver tudo por toda a gente."
+      }
+    };
+
+    function updateProgress() {
+      let answered = 0;
+
+      for (let i = 1; i <= 5; i++) {
+        if (form.querySelector(`input[name="q${i}"]:checked`)) {
+          answered++;
+        }
+      }
+
+      progressBar.style.width = `${answered * 20}%`;
+      progressText.textContent = `${answered} de 5`;
+      progressTrack.setAttribute("aria-valuenow", answered);
+    }
+
+    form.addEventListener("change", updateProgress);
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      const counts = { A: 0, B: 0, C: 0, D: 0 };
+
+      for (let i = 1; i <= 5; i++) {
+        const answer = form.querySelector(
+          `input[name="q${i}"]:checked`
+        );
+
+        if (answer) counts[answer.value]++;
+      }
+
+      // If there is a tie, choose randomly among the tied profiles.
+      const highest = Math.max(...Object.values(counts));
+      const winners = Object.keys(counts).filter(
+        key => counts[key] === highest
+      );
+      const profileKey =
+        winners[Math.floor(Math.random() * winners.length)];
+
+      const profile = profiles[profileKey];
+      const firstName = document.getElementById("name").value.trim()
+        .split(/\s+/)[0];
+
+      document.getElementById("resultSymbol").textContent = profile.symbol;
+      document.getElementById("resultTitle").textContent =
+        `${firstName}, ${profile.title}`;
+      document.getElementById("resultDescription").textContent =
+        profile.description;
+      document.getElementById("resultStrength").textContent =
+        profile.strength;
+      document.getElementById("resultAdvice").textContent =
+        profile.advice;
+
+      result.style.display = "block";
+      result.scrollIntoView({ behavior: "smooth", block: "center" });
+      result.focus({ preventScroll: true });
+    });
+
+    document.getElementById("restartButton").addEventListener("click", () => {
+      form.reset();
+      result.style.display = "none";
+      updateProgress();
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    // Do not allow future birth dates.
+    document.getElementById("birthdate").max =
+      new Date().toISOString().split("T")[0];
+  </script>
+</body>
+</html>
